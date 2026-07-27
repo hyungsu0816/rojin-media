@@ -1,0 +1,22 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="g1" cx="158.69434791630192" cy="101.96870190260233" r="528" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7c9cff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#7c9cff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="850.2365637628245" cy="543.6932572785299" r="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#b98cff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#b98cff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.025 0"/>
+    </filter>
+  </defs>
+  <rect width="960" height="640" fill="#08090a"/>
+  <rect width="960" height="640" fill="url(#g1)"/>
+  <rect width="960" height="640" fill="url(#g2)"/>
+  <rect width="960" height="640" filter="url(#grain)"/>
+  <text x="932" y="614" text-anchor="end" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="218" font-weight="600" fill="#ffffff" fill-opacity="0.06">FR</text>
+  <rect x="0.5" y="0.5" width="959" height="639" fill="none" stroke="#ffffff" stroke-opacity="0.06"/>
+</svg>

@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.env*
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+
+# 참고용 원본/목업 파일 (실제 사이트에서는 쓰이지 않음)
+/music/
+back_em.html
+Gallery_concept.html
+main_concept.html
+music_play.html
+ChatGPT Image*.png

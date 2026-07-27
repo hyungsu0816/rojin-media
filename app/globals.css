@@ -1,0 +1,276 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #08090a;
+  --color-fg: #f4f4f5;
+  --color-dim: #a1a1aa;
+  --color-muted: #71717a;
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-line-soft: rgba(255, 255, 255, 0.05);
+  --color-kakao: #fee500;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 50% -25%, rgba(255, 255, 255, 0.07) 0%, transparent 55%),
+      radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.04) 0%, transparent 45%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: #ffffff;
+    color: #08090a;
+  }
+
+  :focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* 유틸리티 라벨: 타임코드·메타데이터 톤 */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-top::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+  }
+
+  .display {
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    background: linear-gradient(to bottom, #ffffff 35%, #9a9aa2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .editable {
+    outline: 1px dashed rgba(255, 255, 255, 0.35);
+    outline-offset: 4px;
+    border-radius: 2px;
+    cursor: text;
+    transition: background 0.2s;
+  }
+
+  .editable:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .editable:focus {
+    outline: 1px solid #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* ── Hero 플로팅 카드 ───────────────────────────────── */
+/* 바깥 슬롯이 위치와 부유를, 안쪽 래퍼가 커서 반응을 맡습니다.
+   두 transform 을 분리해야 서로 덮어쓰지 않습니다. */
+.slot {
+  position: absolute;
+  animation: drift 7s ease-in-out infinite;
+}
+
+.magnet {
+  transition: transform 0.5s var(--ease-expo);
+  will-change: transform;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* 카드 하나가 멀어졌다(작고 흐리게) 가까워지는(원래 크기) 걸 반복합니다.
+   회전값은 --rot 으로 고정해서 두 애니메이션이 transform 을 두고 다투지 않습니다. */
+.depth-card {
+  transform: rotate(var(--rot, 0deg));
+  animation: depthPulse var(--depth-dur, 8s) ease-in-out infinite;
+  animation-delay: var(--depth-delay, 0s);
+  will-change: transform, filter, opacity;
+}
+
+@keyframes depthPulse {
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg)) scale(var(--depth-far, 0.82));
+    filter: blur(var(--depth-blur, 5px));
+    opacity: 0.78;
+  }
+  50% {
+    transform: rotate(var(--rot, 0deg)) scale(1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+/* ── 스크롤 힌트 마우스 아이콘 ─────────────────────── */
+.scroll-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scrollWheel 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollWheel {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  55% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+  56% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── 히어로 배지: 은은하게 숨쉬는 glow ──────────────── */
+.badge-glow {
+  animation: badgeGlow 4.5s ease-in-out infinite;
+}
+
+@keyframes badgeGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.16);
+  }
+}
+
+/* ── 음악 파형: 재생 중일 때 살짝 숨쉬는 막대 ────────── */
+.bar-pulse {
+  animation: barPulse 1.1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes barPulse {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.86);
+  }
+}
+
+/* ── Works 스트립 ──────────────────────────────────── */
+.strip-viewport {
+  perspective: 1400px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.strip-viewport:active {
+  cursor: grabbing;
+}
+
+.strip-stage {
+  transform-style: preserve-3d;
+}
+
+.work-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 244px;
+  height: 320px;
+  margin-left: -122px;
+  margin-top: -160px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .work-card {
+    width: 200px;
+    height: 268px;
+    margin-left: -100px;
+    margin-top: -134px;
+  }
+}
+
+/* ── 스크롤바 ─────────────────────────────────────── */
+.thin-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 99px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .slot,
+  .magnet,
+  .depth-card,
+  .scroll-wheel,
+  .badge-glow,
+  .bar-pulse {
+    animation: none !important;
+    transition: none !important;
+  }
+}
