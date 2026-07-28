@@ -42,7 +42,7 @@ export function Contact() {
         <T
           path="contact.title"
           as="h2"
-          className="display mt-4 text-[clamp(28px,7.4vw,58px)] sm:mt-5"
+          className="display mt-4 text-[clamp(25px,7.4vw,40px)] sm:mt-5 sm:text-[clamp(40px,5.4vw,58px)]"
         />
         <T
           path="contact.body"

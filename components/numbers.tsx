@@ -43,7 +43,7 @@ export function Numbers() {
         <T
           path="numbers.title"
           as="h2"
-          className="display mt-4 text-[clamp(26px,6.6vw,46px)] sm:mt-5"
+          className="display mt-4 text-[clamp(26px,8vw,36px)] sm:mt-5 sm:text-[clamp(36px,4.6vw,46px)]"
         />
       </div>
 

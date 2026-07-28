@@ -135,7 +135,7 @@ export function SectionHead({
       <T
         path={titlePath}
         as="h2"
-        className="display mt-4 text-[clamp(28px,7vw,52px)] sm:mt-5"
+        className="display mt-4 text-[clamp(28px,10.5vw,42px)] sm:mt-5 sm:text-[clamp(42px,5vw,52px)]"
       />
       {notePath ? (
         <T

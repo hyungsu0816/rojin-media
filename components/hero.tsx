@@ -97,7 +97,10 @@ export function Hero() {
           <T path="hero.badge" className="label" />
         </motion.div>
 
-        <h1 className="display mt-7 text-[clamp(38px,11vw,84px)] sm:mt-8">
+        {/* 모바일과 데스크탑은 vw 계수를 따로 씁니다. 하나의 clamp 로 묶으면
+            좁은 화면에서 vw 값이 최소값 아래로 내려가 글자가 더 이상 커지지 않고
+            화면 폭의 60% 정도만 채운 채 작아 보입니다. */}
+        <h1 className="display mt-7 text-[clamp(38px,14vw,58px)] sm:mt-8 sm:text-[clamp(58px,8.2vw,84px)]">
           <motion.span variants={heroItem} className="block">
             <T path="hero.titleLine1" />
           </motion.span>

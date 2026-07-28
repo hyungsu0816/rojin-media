@@ -30,7 +30,7 @@ export function Philosophy() {
         <T
           path="philosophy.title"
           as="h2"
-          className="display mt-4 text-[clamp(26px,6.6vw,46px)] sm:mt-5"
+          className="display mt-4 text-[clamp(26px,7.7vw,34px)] sm:mt-5 sm:text-[clamp(34px,4.6vw,46px)]"
         />
         <T
           path="philosophy.body"
