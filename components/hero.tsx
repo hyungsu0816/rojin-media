@@ -75,7 +75,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-6 sm:pt-32 sm:pb-24"
+      className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 pt-28 pb-[3.2rem] text-center sm:px-6 sm:pt-32 sm:pb-[4.8rem]"
       style={{
         ...(spacing.top ? { marginTop: `${spacing.top}rem` } : {}),
         ...(spacing.bottom ? { marginBottom: `${spacing.bottom}rem` } : {}),

@@ -108,7 +108,7 @@ export function Section({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative mx-auto w-full max-w-[1180px] px-5 py-20 sm:px-6 sm:py-28 md:py-36 ${className}`}
+      className={`relative mx-auto w-full max-w-[1180px] px-5 py-16 sm:px-6 sm:py-[5.6rem] md:py-[7.2rem] ${className}`}
       style={{
         ...(spacing.top ? { marginTop: `${spacing.top}rem` } : {}),
         ...(spacing.bottom ? { marginBottom: `${spacing.bottom}rem` } : {}),
@@ -130,7 +130,7 @@ export function SectionHead({
   notePath?: string;
 }) {
   return (
-    <header className="mb-12 flex flex-col items-center text-center sm:mb-16">
+    <header className="mb-[2.4rem] flex flex-col items-center text-center sm:mb-[3.2rem]">
       <T path={eyebrowPath} className="label" />
       <T
         path={titlePath}

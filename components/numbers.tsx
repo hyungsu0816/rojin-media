@@ -47,7 +47,7 @@ export function Numbers() {
         />
       </div>
 
-      <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-16 lg:grid-cols-4">
+      <div className="mt-[2.4rem] grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-[3.2rem] lg:grid-cols-4">
         {content.numbers.stats.map((stat, i) => (
           <div
             key={stat.label}

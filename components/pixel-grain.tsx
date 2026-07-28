@@ -31,10 +31,25 @@ export function PixelGrain() {
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.round(rect.width));
-      canvas.height = Math.max(1, Math.round(rect.height));
-      cols = Math.max(1, Math.ceil(canvas.width / PIXEL));
-      rows = Math.max(1, Math.ceil(canvas.height / PIXEL));
+      const cssW = Math.max(1, Math.round(rect.width));
+      const cssH = Math.max(1, Math.round(rect.height));
+
+      // 폰·레티나 화면(devicePixelRatio 2~3)에서 CSS 픽셀 크기로만 그리면,
+      // 브라우저가 그 비트맵을 흐릿하게 늘려서 알갱이가 뭉개집니다.
+      // 알갱이 자체가 워낙 옅어서(알파 최대 26/255) 늘어나는 순간 거의 안 보이게 됩니다.
+      // 그래서 실제 화면 해상도만큼 그리고, 확대는 아래 imageSmoothingEnabled = false 로
+      // 또렷하게 처리합니다. 다만 iOS 는 캔버스 한 변이 너무 길면 아예 못 그리므로 상한을 둡니다.
+      const MAX_SIDE = 4096;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(dpr, MAX_SIDE / cssW, MAX_SIDE / cssH);
+      dpr = Math.max(1, dpr);
+
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+
+      // 알갱이 격자는 CSS 크기 기준으로 유지해서, 화면이 달라져도 보이는 크기는 같게 합니다.
+      cols = Math.max(1, Math.ceil(cssW / PIXEL));
+      rows = Math.max(1, Math.ceil(cssH / PIXEL));
       buffer.width = cols;
       buffer.height = rows;
     };

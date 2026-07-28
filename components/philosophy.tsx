@@ -44,7 +44,7 @@ export function Philosophy() {
         initial="hidden"
         animate="show"
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.14 } } }}
-        className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-20 md:grid-cols-3"
+        className="mt-[2.8rem] grid gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-16 md:grid-cols-3"
       >
         {content.philosophy.points.map((p, i) => (
           <motion.div
