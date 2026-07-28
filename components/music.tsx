@@ -102,9 +102,9 @@ export function Music() {
     <Section id="music">
       <SectionHead eyebrowPath="music.eyebrow" titlePath="music.title" notePath="music.note" />
 
-      <div className="glass glass-top relative mx-auto grid max-w-[1000px] gap-6 rounded-2xl p-6 md:grid-cols-[188px_1fr] lg:grid-cols-[188px_1fr_252px]">
-        {/* 앨범아트 */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-line bg-white/3">
+      <div className="glass glass-top relative mx-auto grid max-w-[1000px] gap-5 rounded-2xl p-4 sm:gap-6 sm:p-6 md:grid-cols-[188px_1fr] lg:grid-cols-[188px_1fr_252px]">
+        {/* 앨범아트 (모바일에서는 화면 전체를 채우지 않도록 크기를 제한합니다) */}
+        <div className="relative mx-auto aspect-square w-full max-w-[190px] overflow-hidden rounded-xl border border-line bg-white/3 md:mx-0 md:max-w-none">
           <AnimatePresence mode="wait">
             {track?.cover ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -137,13 +137,13 @@ export function Music() {
         </div>
 
         {/* 파형 + 컨트롤 */}
-        <div className="flex flex-col justify-between gap-6">
+        <div className="flex flex-col justify-between gap-5 sm:gap-6">
           <div>
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start justify-between gap-3 sm:gap-4">
               <T
                 path={`tracks.${index}.title`}
                 as="h3"
-                className="text-xl font-semibold tracking-tight text-fg md:text-2xl"
+                className="text-lg font-semibold tracking-tight text-fg sm:text-xl md:text-2xl"
               />
               <span className="label shrink-0 rounded-full border border-line bg-white/4 px-2.5 py-1">
                 {hasAudio ? "streaming" : "preview"}
@@ -172,7 +172,7 @@ export function Music() {
               if (e.key === "ArrowRight") seek(progress + 0.05);
               if (e.key === "ArrowLeft") seek(progress - 0.05);
             }}
-            className="flex h-24 cursor-pointer items-center gap-[1px] sm:gap-[3px]"
+            className="flex h-16 cursor-pointer items-center gap-[1px] sm:h-24 sm:gap-[3px]"
           >
             {bars.map((h, i) => {
               const played = i / BARS <= progress;
@@ -191,12 +191,14 @@ export function Music() {
             })}
           </div>
 
+          {/* 이전/다음 버튼은 아이콘이 16px 이라 그대로 두면 모바일에서 누르기 어렵습니다.
+              -m-2 p-2 로 보이는 크기는 그대로 두고 누를 수 있는 영역만 넓힙니다. */}
           <div className="flex items-center gap-5">
             <button
               type="button"
               onClick={() => go(-1)}
               aria-label="이전 트랙"
-              className="text-dim transition-colors hover:text-fg"
+              className="-m-2 p-2 text-dim transition-colors hover:text-fg"
             >
               <PrevIcon className="h-4 w-4" />
             </button>
@@ -216,7 +218,7 @@ export function Music() {
               type="button"
               onClick={() => go(1)}
               aria-label="다음 트랙"
-              className="text-dim transition-colors hover:text-fg"
+              className="-m-2 p-2 text-dim transition-colors hover:text-fg"
             >
               <NextIcon className="h-4 w-4" />
             </button>
@@ -228,7 +230,7 @@ export function Music() {
         </div>
 
         {/* 플레이리스트 */}
-        <div className="thin-scroll max-h-[300px] overflow-y-auto border-line pt-6 lg:border-l lg:pt-0 lg:pl-6">
+        <div className="thin-scroll max-h-[260px] overflow-y-auto border-line pt-5 sm:max-h-[300px] sm:pt-6 lg:border-l lg:pt-0 lg:pl-6">
           <span className="label">playlist</span>
           <ul className="mt-4 flex flex-col gap-1">
             {tracks.map((t, i) => (

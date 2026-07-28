@@ -31,6 +31,11 @@
     color: var(--color-fg);
     font-family: var(--font-sans);
     overflow-x: hidden;
+    /* 한글은 기본값(normal)이면 글자 단위로 아무 데서나 줄이 바뀝니다.
+       "배포까지" 가 "배 / 포까지" 처럼 쪼개지는 걸 막고 띄어쓰기 기준으로 끊습니다.
+       대신 띄어쓰기 없는 긴 영문·URL 은 그대로 두면 넘치므로 함께 풀어줍니다. */
+    word-break: keep-all;
+    overflow-wrap: break-word;
     background-image:
       radial-gradient(circle at 50% -25%, rgba(255, 255, 255, 0.07) 0%, transparent 55%),
       radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.04) 0%, transparent 45%);
@@ -212,10 +217,24 @@
 }
 
 /* ── Works 스트립 ──────────────────────────────────── */
+/* 카드가 화면 밖 좌우로 멀리 배치되기 때문에 반드시 여기서 잘라내야 합니다.
+   안 그러면 문서 전체가 가로로 넓어져서(모바일에서 1000px 이상) 화면 밖으로
+   넘치고, 상단 고정 내비게이션까지 그 넓이를 기준으로 중앙 정렬돼 오른쪽으로
+   밀려버립니다. 섹션 좌우 여백(px-5/px-6)만큼 밖으로 넓혀 화면 끝까지 흐르게 한 뒤 자릅니다. */
 .strip-viewport {
   perspective: 1400px;
   cursor: grab;
   touch-action: pan-y;
+  overflow: hidden;
+  margin-inline: -20px;
+  width: calc(100% + 40px);
+}
+
+@media (min-width: 640px) {
+  .strip-viewport {
+    margin-inline: -24px;
+    width: calc(100% + 48px);
+  }
 }
 
 .strip-viewport:active {

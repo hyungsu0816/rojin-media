@@ -75,7 +75,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col items-center justify-center px-6 pt-32 pb-24 text-center"
+      className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-6 sm:pt-32 sm:pb-24"
       style={{
         ...(spacing.top ? { marginTop: `${spacing.top}rem` } : {}),
         ...(spacing.bottom ? { marginBottom: `${spacing.bottom}rem` } : {}),
@@ -97,7 +97,7 @@ export function Hero() {
           <T path="hero.badge" className="label" />
         </motion.div>
 
-        <h1 className="display mt-8 text-[clamp(40px,8.2vw,84px)]">
+        <h1 className="display mt-7 text-[clamp(38px,11vw,84px)] sm:mt-8">
           <motion.span variants={heroItem} className="block">
             <T path="hero.titleLine1" />
           </motion.span>
@@ -110,13 +110,13 @@ export function Hero() {
           <T
             path="hero.subtitle"
             as="p"
-            className="mt-7 max-w-[520px] text-[15px] leading-relaxed text-dim md:text-base"
+            className="mt-5 max-w-[520px] text-[14px] leading-relaxed text-balance text-dim sm:mt-7 sm:text-[15px] md:text-base"
           />
         </motion.div>
 
         <motion.div
           variants={heroItem}
-          className="mt-10 flex w-full max-w-[300px] flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row">
+          className="mt-8 flex w-full max-w-[280px] flex-col gap-2.5 sm:mt-10 sm:w-auto sm:max-w-none sm:flex-row sm:gap-3">
           <a
             href="#works"
             className="group flex items-center justify-center gap-2 rounded-lg bg-fg px-7 py-3 text-sm font-medium text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(255,255,255,0.12)]"

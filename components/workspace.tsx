@@ -27,7 +27,7 @@ export function Workspace() {
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
-        className="mx-auto grid max-w-[900px] grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
+        className="mx-auto grid max-w-[900px] grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
       >
         {content.tools.map((tool, i) => {
           const project = content.projects.find((p) => p.id === tool.projectId);
@@ -36,7 +36,7 @@ export function Workspace() {
               key={tool.id}
               variants={cardVariants}
               href="#works"
-              className="glass glass-top group relative flex flex-col gap-4 rounded-2xl p-5 transition-all duration-500 hover:-translate-y-1 hover:border-white/22 hover:bg-white"
+              className="glass glass-top group relative flex flex-col gap-3.5 rounded-2xl p-4 transition-all duration-500 hover:-translate-y-1 hover:border-white/22 hover:bg-white sm:gap-4 sm:p-5"
             >
               <ToolGlyph
                 id={tool.id}

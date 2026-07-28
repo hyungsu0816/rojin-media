@@ -7,10 +7,18 @@ import { T } from "@/components/editable";
 import { Section, SectionHead } from "@/components/section";
 import { ArrowRight } from "@/components/icons";
 
-const CARD_W = 300; // 카드 간격
 const AUTO = 0.25; // 원본(0.5) 대비 50% 감속
 const DEPTH = 220; // 원본(500) 대비 깊이 축소
 const TILT = 26; // 원본(45deg) 대비 회전 축소
+
+/** 카드 간격과 좌우로 퍼지는 폭. 화면이 좁으면 둘 다 같이 줄여야
+ * 양옆 카드가 "완전히 투명해져서 한 장만 보이는" 상태가 되지 않습니다.
+ * (간격만 고정 300px 이면 모바일에서 이웃 카드가 항상 opacity 0 이 됩니다) */
+function metrics() {
+  const w = typeof window === "undefined" ? 1280 : window.innerWidth;
+  if (w < 640) return { cardW: 232, spread: w / 1.15 };
+  return { cardW: 300, spread: Math.min(w, 1080) / 1.6 };
+}
 
 export function SelectedWorks() {
   const { content, editing } = useContent();
@@ -40,14 +48,14 @@ export function SelectedWorks() {
       }
       scroll.current += (target.current - scroll.current) * 0.07;
 
-      const total = count * CARD_W;
-      const spread = Math.min(window.innerWidth, 1080) / 1.6;
+      const { cardW, spread } = metrics();
+      const total = count * cardW;
       let nearest = 0;
       let nearestDist = Infinity;
 
       cardsRef.current.forEach((el, i) => {
         if (!el) return;
-        let v = i * CARD_W - scroll.current;
+        let v = i * cardW - scroll.current;
         while (v < -total / 2) v += total;
         while (v > total / 2) v -= total;
 
@@ -58,7 +66,7 @@ export function SelectedWorks() {
         }deg)`;
         el.style.opacity = String(Math.max(0, 1 - Math.pow(abs, 2.2)));
         el.style.zIndex = String(1000 - Math.round(Math.abs(v)));
-        el.style.pointerEvents = Math.abs(v) < CARD_W ? "auto" : "none";
+        el.style.pointerEvents = Math.abs(v) < cardW ? "auto" : "none";
 
         if (Math.abs(v) < nearestDist) {
           nearestDist = Math.abs(v);
@@ -124,7 +132,7 @@ export function SelectedWorks() {
   }, []);
 
   const step = useCallback((dir: number) => {
-    target.current += dir * CARD_W;
+    target.current += dir * metrics().cardW;
     velocity.current = 0;
   }, []);
 
@@ -220,7 +228,7 @@ export function SelectedWorks() {
             type="button"
             onClick={() => step(-1)}
             aria-label="이전 작업"
-            className="glass flex h-9 w-9 items-center justify-center rounded-full text-dim transition-colors hover:border-white/25 hover:text-fg"
+            className="glass flex h-11 w-11 items-center justify-center rounded-full text-dim transition-colors hover:border-white/25 hover:text-fg sm:h-9 sm:w-9"
           >
             <ArrowRight className="h-3.5 w-3.5 rotate-180" />
           </button>
@@ -228,7 +236,7 @@ export function SelectedWorks() {
             type="button"
             onClick={() => step(1)}
             aria-label="다음 작업"
-            className="glass flex h-9 w-9 items-center justify-center rounded-full text-dim transition-colors hover:border-white/25 hover:text-fg"
+            className="glass flex h-11 w-11 items-center justify-center rounded-full text-dim transition-colors hover:border-white/25 hover:text-fg sm:h-9 sm:w-9"
           >
             <ArrowRight className="h-3.5 w-3.5" />
           </button>

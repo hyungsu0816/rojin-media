@@ -31,14 +31,20 @@ export function Nav() {
         {/* 1줄: 브랜드부터 Contact까지 하나로 통일된 링크 목록. PC와 모바일 동일 구성.
             폭이 모자라면(초소형 화면) 잘리는 대신 줄바꿈됩니다 */}
         <div
-          className={`flex flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-[28px] border px-3 py-2 font-mono text-[10px] tracking-wider text-dim uppercase transition-colors duration-500 sm:gap-x-6 sm:rounded-full sm:text-[11px] md:gap-x-7 ${
+          className={`flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 rounded-[28px] border px-3 py-1 font-mono text-[10px] tracking-wider text-dim uppercase transition-colors duration-500 sm:gap-x-6 sm:rounded-full sm:px-4 sm:text-[11px] md:gap-x-7 ${
             scrolled
               ? "border-line bg-[rgba(14,14,16,0.72)] backdrop-blur-xl"
               : "border-transparent bg-transparent"
           }`}
         >
+          {/* py-1.5 는 손가락으로 누를 수 있는 영역을 넓히기 위한 것입니다.
+              글자만이면 세로 15px 이라 모바일에서 정확히 누르기 어렵습니다. */}
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="transition-colors hover:text-fg">
+            <a
+              key={l.href}
+              href={l.href}
+              className="py-1.5 transition-colors hover:text-fg"
+            >
               {l.label}
             </a>
           ))}

@@ -30,12 +30,12 @@ export function Philosophy() {
         <T
           path="philosophy.title"
           as="h2"
-          className="display mt-5 text-[clamp(28px,4.6vw,46px)]"
+          className="display mt-4 text-[clamp(26px,6.6vw,46px)] sm:mt-5"
         />
         <T
           path="philosophy.body"
           as="p"
-          className="mt-6 max-w-[560px] text-[15px] leading-[1.75] text-dim"
+          className="mt-5 max-w-[560px] text-[14px] leading-[1.75] text-balance text-dim sm:mt-6 sm:text-[15px]"
         />
       </div>
 
@@ -44,13 +44,13 @@ export function Philosophy() {
         initial="hidden"
         animate="show"
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.14 } } }}
-        className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-line bg-line-soft md:grid-cols-3"
+        className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-20 md:grid-cols-3"
       >
         {content.philosophy.points.map((p, i) => (
           <motion.div
             key={p.title}
             variants={pointVariants}
-            className="group bg-ink/85 px-7 py-10 backdrop-blur-sm transition-colors duration-500 hover:bg-white"
+            className="group bg-ink/85 px-6 py-8 backdrop-blur-sm transition-colors duration-500 hover:bg-white sm:px-7 sm:py-10"
           >
             <span className="label transition-colors duration-500 group-hover:text-ink">
               {String(i + 1).padStart(2, "0")}

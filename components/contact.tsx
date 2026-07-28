@@ -42,15 +42,15 @@ export function Contact() {
         <T
           path="contact.title"
           as="h2"
-          className="display mt-5 text-[clamp(32px,5.4vw,58px)]"
+          className="display mt-4 text-[clamp(28px,7.4vw,58px)] sm:mt-5"
         />
         <T
           path="contact.body"
           as="p"
-          className="mt-6 max-w-[520px] text-[15px] leading-relaxed text-dim"
+          className="mt-5 max-w-[520px] text-[14px] leading-relaxed text-balance text-dim sm:mt-6 sm:text-[15px]"
         />
 
-        <div className="mt-10 flex w-full max-w-[320px] flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row">
+        <div className="mt-8 flex w-full max-w-[300px] flex-col gap-2.5 sm:mt-10 sm:w-auto sm:max-w-none sm:flex-row sm:gap-3">
           <a
             href={content.brand.kakaoUrl}
             target="_blank"
@@ -83,13 +83,13 @@ export function Contact() {
         initial="hidden"
         animate="show"
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.14 } } }}
-        className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-line bg-line-soft md:grid-cols-3"
+        className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-20 md:grid-cols-3"
       >
         {content.contact.services.map((s, i) => (
           <motion.div
             key={s.title}
             variants={serviceVariants}
-            className="bg-ink/85 px-7 py-9 backdrop-blur-sm"
+            className="bg-ink/85 px-6 py-7 backdrop-blur-sm sm:px-7 sm:py-9"
           >
             <T
               path={`contact.services.${i}.title`}

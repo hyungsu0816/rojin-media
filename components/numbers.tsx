@@ -43,15 +43,15 @@ export function Numbers() {
         <T
           path="numbers.title"
           as="h2"
-          className="display mt-5 text-[clamp(28px,4.6vw,46px)]"
+          className="display mt-4 text-[clamp(26px,6.6vw,46px)] sm:mt-5"
         />
       </div>
 
-      <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line-soft lg:grid-cols-4">
+      <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line-soft sm:mt-16 lg:grid-cols-4">
         {content.numbers.stats.map((stat, i) => (
           <div
             key={stat.label}
-            className="flex flex-col items-center gap-2 bg-ink/85 px-4 py-12 backdrop-blur-sm"
+            className="flex flex-col items-center gap-2 bg-ink/85 px-4 py-9 backdrop-blur-sm sm:py-12"
           >
             {editing ? (
               <T
