@@ -9,14 +9,12 @@ import { useYoutubeMute } from "@/components/youtube-mute";
 
 const BARS = 72;
 
-// 두 채널의 "업로드 동영상" 재생목록입니다. 채널 ID(youtube.com/@핸들 페이지에서 확인)의
-// 앞 두 글자 UC 를 UU 로 바꾸면 유튜브가 자동으로 만들어주는 "이 채널의 모든 업로드"
-// 재생목록 ID가 됩니다. 이 ID 하나로 채널에 새 영상이 올라와도 따로 손댈 필요 없이
-// 계속 이어서 재생됩니다.
-const CHANNEL_UPLOADS_PLAYLIST = {
-  fromy: "UU0uYtui_gDS82eR0BEwTJHQ", // youtube.com/@from_moment
-  pacebeat: "UU8iraw8fZe2S7_z5XhgA3ag", // youtube.com/@pacebeatmusic
-} as const;
+// 예전에는 채널 ID 의 UC 를 UU 로 바꾼 "업로드 전체" 재생목록(list=UU...)으로
+// 자동재생했는데, 이 재생목록은 유튜브가 실시간으로 관리하는 값이라 그중 한
+// 영상이라도 임베드가 막혀 있으면("이 동영상은 볼 수 없습니다") 화면이 그대로
+// 멈춰버립니다. 그래서 지금은 직접 확인한 목록(content.fromyVideos/youtubeVideos)의
+// 첫 영상부터 우리가 순서를 관리하며 재생하고, 재생이 끝나거나 에러가 나면
+// 다음 영상으로 자동으로 넘어갑니다.
 
 type ListTab = "fromy" | "pacebeat" | "playlist";
 
@@ -67,28 +65,73 @@ export function Music() {
   // playlist 탭으로 가도 화면은 마지막으로 보던 채널을 계속 보여줘야 하므로,
   // "지금 보고 있는 채널"은 listTab 과 별개로 기억해둡니다.
   const [activeChannel, setActiveChannel] = useState<"fromy" | "pacebeat">("fromy");
-  // null 이면 채널 업로드를 순서대로 자동재생하고, 목록에서 하나를 고르면 그 영상만 재생합니다.
-  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  // 지금 화면에서 재생 중인 영상. 채널 탭을 고르면 그 채널의 첫 영상으로 시작해서,
+  // 끝나거나 에러가 나면 아래 목록 순서대로 다음 영상으로 자동으로 넘어갑니다.
+  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(
+    () => fromyVideos[0]?.videoId ?? null,
+  );
 
   const audioRef = useRef<HTMLAudioElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const track = tracks[index] ?? tracks[0];
   const hasAudio = Boolean(track?.src);
   const bars = useMemo(() => waveform(track?.id ?? "seed"), [track?.id]);
   const total = toSeconds(track?.duration ?? "3:30");
 
+  const activeList = activeChannel === "fromy" ? fromyVideos : pacebeatVideos;
+
   // 항상 mute=1 로 시작합니다 — 실제 소리 켜짐 여부는 YoutubeMuteProvider 가
   // postMessage 로 따로 제어합니다(주석은 youtube-mute.tsx 참고).
   const youtubeSrc = selectedVideoId
     ? `https://www.youtube.com/embed/${selectedVideoId}?autoplay=1&mute=1&enablejsapi=1&rel=0`
-    : `https://www.youtube.com/embed/videoseries?list=${CHANNEL_UPLOADS_PLAYLIST[activeChannel]}&autoplay=1&mute=1&enablejsapi=1&rel=0`;
+    : "";
 
   const { registerIframe } = useYoutubeMute();
+
+  const setIframeRef = useCallback(
+    (el: HTMLIFrameElement | null) => {
+      iframeRef.current = el;
+      registerIframe(el);
+    },
+    [registerIframe],
+  );
 
   const selectChannelTab = (channel: "fromy" | "pacebeat") => {
     setListTab(channel);
     setActiveChannel(channel);
-    setSelectedVideoId(null);
+    const list = channel === "fromy" ? fromyVideos : pacebeatVideos;
+    setSelectedVideoId(list[0]?.videoId ?? null);
   };
+
+  // 지금 보이는 영상이 재생 끝(state 0)이거나 재생 불가(onError) 상태가 되면
+  // 같은 채널 목록에서 다음 영상으로 자동으로 넘어갑니다 — 유튜브의 실시간
+  // "업로드 전체" 재생목록 대신 우리가 확인한 목록 안에서만 순환하므로,
+  // 임베드가 막힌 영상 하나 때문에 화면이 멈추는 일이 없습니다.
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin !== "https://www.youtube.com") return;
+      if (e.source !== iframeRef.current?.contentWindow) return;
+      let data: unknown;
+      try {
+        data = JSON.parse(e.data);
+      } catch {
+        return;
+      }
+      const parsed = data as { event?: string; info?: number };
+      const ended = parsed.event === "onStateChange" && parsed.info === 0;
+      const errored = parsed.event === "onError";
+      if (!ended && !errored) return;
+
+      setSelectedVideoId((current) => {
+        const i = activeList.findIndex((v) => v.videoId === current);
+        if (activeList.length === 0) return current;
+        const nextIndex = i === -1 ? 0 : (i + 1) % activeList.length;
+        return activeList[nextIndex].videoId;
+      });
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [activeList]);
 
   const go = useCallback(
     (dir: number) => {
@@ -139,26 +182,29 @@ export function Music() {
 
       <div className="glass glass-top relative mx-auto flex max-w-[720px] flex-col gap-5 rounded-2xl p-4 sm:gap-6 sm:p-6">
         {/* 실제로 재생되는 화면 — fromy/pacebeat 채널의 진짜 유튜브 영상입니다.
-            아무것도 고르지 않았으면 지금 선택된 채널(activeChannel)의 업로드를
-            순서대로 이어서 자동재생하고, 아래 목록에서 하나를 고르면 그 영상으로 바뀝니다.
-            브라우저 정책상 소리 있는 자동재생은 처음엔 막힐 수 있는데, 그 경우
-            유튜브 자체 재생 버튼이 한 번 보였다가 눌러주면 이어서 재생됩니다. */}
+            채널 탭을 고르면 그 채널의 목록 순서대로 재생하고, 하나를 직접 고르면
+            그 영상부터 이어집니다. 영상이 끝나거나(재생 불가 포함) 목록의 다음
+            영상으로 자동으로 넘어갑니다. 브라우저 정책상 소리 있는 자동재생은
+            처음엔 막힐 수 있는데, 그 경우 유튜브 자체 재생 버튼이 한 번 보였다가
+            눌러주면 이어서 재생됩니다. */}
         <div className="text-center">
           <span className="label">{activeChannel.toUpperCase()} · YOUTUBE</span>
           <div
             className="relative mt-3 w-full overflow-hidden rounded-xl border border-line bg-white/3"
             style={{ aspectRatio: "16 / 9" }}
           >
-            <iframe
-              key={youtubeSrc}
-              ref={registerIframe}
-              src={youtubeSrc}
-              title={`${activeChannel} 유튜브 채널 영상`}
-              className="absolute inset-0 h-full w-full"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
+            {youtubeSrc ? (
+              <iframe
+                key={youtubeSrc}
+                ref={setIframeRef}
+                src={youtubeSrc}
+                title={`${activeChannel} 유튜브 채널 영상`}
+                className="absolute inset-0 h-full w-full"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            ) : null}
           </div>
         </div>
 
