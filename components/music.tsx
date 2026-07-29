@@ -1,13 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useContent } from "@/components/content-provider";
 import { T } from "@/components/editable";
 import { Section, SectionHead } from "@/components/section";
 import { NextIcon, PauseIcon, PlayIcon, PrevIcon } from "@/components/icons";
 
 const BARS = 72;
+
+// PaceBeat 채널의 "업로드 동영상" 재생목록입니다. 채널 ID(UC8iraw8fZe2S7_z5XhgA3ag,
+// youtube.com/@pacebeatmusic 페이지에서 확인)의 앞 두 글자 UC 를 UU 로 바꾸면
+// 유튜브가 자동으로 만들어주는 "이 채널의 모든 업로드" 재생목록 ID가 됩니다.
+// 이 ID 하나로 채널에 새 영상이 올라와도 따로 손댈 필요 없이 계속 이어서 재생됩니다.
+const PACEBEAT_UPLOADS_PLAYLIST = "UU8iraw8fZe2S7_z5XhgA3ag";
 
 /** 트랙마다 같은 모양이 나오도록, 제목에서 파형을 만듭니다. */
 function waveform(seed: string) {
@@ -103,37 +108,20 @@ export function Music() {
       <SectionHead eyebrowPath="music.eyebrow" titlePath="music.title" notePath="music.note" />
 
       <div className="glass glass-top relative mx-auto grid max-w-[1000px] gap-5 rounded-2xl p-4 sm:gap-6 sm:p-6 md:grid-cols-[188px_1fr] lg:grid-cols-[188px_1fr_252px]">
-        {/* 앨범아트 (모바일에서는 화면 전체를 채우지 않도록 크기를 제한합니다) */}
+        {/* 앨범아트 자리에 PaceBeat 채널의 실제 유튜브 영상을 넣습니다.
+            채널에 올라온 순서대로 이어서 자동재생되고(재생목록 임베드),
+            소리는 로컬 mp3 플레이어와 섞이지 않도록 그대로 유튜브 소리를 씁니다.
+            브라우저 정책상 소리 있는 자동재생은 처음엔 막힐 수 있는데, 그 경우
+            유튜브 자체 재생 버튼이 한 번 보였다가 눌러주면 이어서 재생됩니다. */}
         <div className="relative mx-auto aspect-square w-full max-w-[190px] overflow-hidden rounded-xl border border-line bg-white/3 md:mx-0 md:max-w-none">
-          <AnimatePresence mode="wait">
-            {track?.cover ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <motion.img
-                key={track.id}
-                src={track.cover}
-                alt={track.title}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            ) : (
-              <motion.div
-                key={`ph-${track?.id}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-1"
-              >
-                <span className="font-mono text-4xl tracking-tight text-white/20">
-                  {track?.bpm ?? "—"}
-                </span>
-                <span className="label">bpm</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <iframe
+            src={`https://www.youtube.com/embed/videoseries?list=${PACEBEAT_UPLOADS_PLAYLIST}&autoplay=1&rel=0`}
+            title="PaceBeat 유튜브 채널 영상"
+            className="absolute inset-0 h-full w-full"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+          />
         </div>
 
         {/* 파형 + 컨트롤 */}
