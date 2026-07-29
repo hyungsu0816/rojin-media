@@ -140,96 +140,101 @@ export function Music() {
           </div>
         </div>
 
-        {/* 로컬 mp3 트랙 정보 + 파형 + 컨트롤 */}
-        <div>
-          <div className="flex items-start justify-between gap-3 sm:gap-4">
-            <T
-              path={`tracks.${index}.title`}
-              as="h3"
-              className="text-lg font-semibold tracking-tight text-fg sm:text-xl md:text-2xl"
-            />
-            <span className="label shrink-0 rounded-full border border-line bg-white/4 px-2.5 py-1">
-              {hasAudio ? "streaming" : "preview"}
-            </span>
-          </div>
-          <div className="mt-1.5 flex items-center gap-2">
-            <T path={`tracks.${index}.project`} className="label" />
-            <span className="text-white/20">·</span>
-            <span className="label">{track?.bpm} BPM</span>
-          </div>
-        </div>
+        {/* 로컬 mp3 트랙 정보 + 파형 + 컨트롤은 PLAYLIST 탭일 때만 보여줍니다.
+            YOUTUBE 탭에서는 로컬 재생과 무관한 정보라 숨겨둡니다(재생 자체는 백그라운드에서 계속됩니다). */}
+        {listTab === "playlist" ? (
+          <>
+            <div>
+              <div className="flex items-start justify-between gap-3 sm:gap-4">
+                <T
+                  path={`tracks.${index}.title`}
+                  as="h3"
+                  className="text-lg font-semibold tracking-tight text-fg sm:text-xl md:text-2xl"
+                />
+                <span className="label shrink-0 rounded-full border border-line bg-white/4 px-2.5 py-1">
+                  {hasAudio ? "streaming" : "preview"}
+                </span>
+              </div>
+              <div className="mt-1.5 flex items-center gap-2">
+                <T path={`tracks.${index}.project`} className="label" />
+                <span className="text-white/20">·</span>
+                <span className="label">{track?.bpm} BPM</span>
+              </div>
+            </div>
 
-        {/* 파형 */}
-        <div
-          role="slider"
-          tabIndex={0}
-          aria-label="재생 위치"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progress * 100)}
-          onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            seek((e.clientX - rect.left) / rect.width);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowRight") seek(progress + 0.05);
-            if (e.key === "ArrowLeft") seek(progress - 0.05);
-          }}
-          className="flex h-16 cursor-pointer items-center gap-[1px] sm:h-24 sm:gap-[3px]"
-        >
-          {bars.map((h, i) => {
-            const played = i / BARS <= progress;
-            return (
-              <span
-                key={i}
-                className={`flex-1 rounded-full transition-[height,background-color] duration-300 ${
-                  played ? "bg-white/85" : "bg-white/16"
-                } ${playing ? "bar-pulse" : ""}`}
-                style={{
-                  height: `${Math.round(h * 100)}%`,
-                  animationDelay: playing ? `${(i % 14) * 0.07}s` : undefined,
-                }}
-              />
-            );
-          })}
-        </div>
+            {/* 파형 */}
+            <div
+              role="slider"
+              tabIndex={0}
+              aria-label="재생 위치"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(progress * 100)}
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                seek((e.clientX - rect.left) / rect.width);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight") seek(progress + 0.05);
+                if (e.key === "ArrowLeft") seek(progress - 0.05);
+              }}
+              className="flex h-16 cursor-pointer items-center gap-[1px] sm:h-24 sm:gap-[3px]"
+            >
+              {bars.map((h, i) => {
+                const played = i / BARS <= progress;
+                return (
+                  <span
+                    key={i}
+                    className={`flex-1 rounded-full transition-[height,background-color] duration-300 ${
+                      played ? "bg-white/85" : "bg-white/16"
+                    } ${playing ? "bar-pulse" : ""}`}
+                    style={{
+                      height: `${Math.round(h * 100)}%`,
+                      animationDelay: playing ? `${(i % 14) * 0.07}s` : undefined,
+                    }}
+                  />
+                );
+              })}
+            </div>
 
-        {/* 이전/다음 버튼은 아이콘이 16px 이라 그대로 두면 모바일에서 누르기 어렵습니다.
-            -m-2 p-2 로 보이는 크기는 그대로 두고 누를 수 있는 영역만 넓힙니다. */}
-        <div className="flex items-center gap-5">
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label="이전 트랙"
-            className="-m-2 p-2 text-dim transition-colors hover:text-fg"
-          >
-            <PrevIcon className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setPlaying((p) => !p)}
-            aria-label={playing ? "일시정지" : "재생"}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-fg text-ink transition-transform duration-300 hover:scale-105"
-          >
-            {playing ? (
-              <PauseIcon className="h-4 w-4" />
-            ) : (
-              <PlayIcon className="ml-0.5 h-4 w-4" />
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label="다음 트랙"
-            className="-m-2 p-2 text-dim transition-colors hover:text-fg"
-          >
-            <NextIcon className="h-4 w-4" />
-          </button>
+            {/* 이전/다음 버튼은 아이콘이 16px 이라 그대로 두면 모바일에서 누르기 어렵습니다.
+                -m-2 p-2 로 보이는 크기는 그대로 두고 누를 수 있는 영역만 넓힙니다. */}
+            <div className="flex items-center gap-5">
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                aria-label="이전 트랙"
+                className="-m-2 p-2 text-dim transition-colors hover:text-fg"
+              >
+                <PrevIcon className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setPlaying((p) => !p)}
+                aria-label={playing ? "일시정지" : "재생"}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-fg text-ink transition-transform duration-300 hover:scale-105"
+              >
+                {playing ? (
+                  <PauseIcon className="h-4 w-4" />
+                ) : (
+                  <PlayIcon className="ml-0.5 h-4 w-4" />
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => go(1)}
+                aria-label="다음 트랙"
+                className="-m-2 p-2 text-dim transition-colors hover:text-fg"
+              >
+                <NextIcon className="h-4 w-4" />
+              </button>
 
-          <span className="label ml-auto tabular-nums">
-            {elapsed} / {track?.duration}
-          </span>
-        </div>
+              <span className="label ml-auto tabular-nums">
+                {elapsed} / {track?.duration}
+              </span>
+            </div>
+          </>
+        ) : null}
 
         {/* 유튜브 목록 / 로컬 재생목록 — 같은 자리에서 탭으로 오갑니다.
             위 화면은 실제로 작동하는 유튜브 플레이어, 아래는 두 종류의 카탈로그입니다. */}
