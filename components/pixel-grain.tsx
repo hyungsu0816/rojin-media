@@ -11,7 +11,8 @@ const UPDATE_EVERY = 3; // 매 프레임 갱신하면 어지러워서 3프레임
 function grainSettings() {
   const w = typeof window === "undefined" ? 1280 : window.innerWidth;
   if (w < 640) {
-    return { pixel: 3, chance: 0.07, alphaMin: 14, alphaRange: 30 };
+    // 이전 값(alphaMin 14, alphaRange 30)의 약 40% 투명도로 낮춘 값입니다.
+    return { pixel: 3, chance: 0.07, alphaMin: 6, alphaRange: 12 };
   }
   return { pixel: 2, chance: 0.05, alphaMin: 8, alphaRange: 18 };
 }
