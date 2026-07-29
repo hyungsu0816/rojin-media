@@ -122,16 +122,16 @@ export function Hero() {
           className="mt-8 flex w-full max-w-[280px] flex-col gap-2.5 sm:mt-10 sm:w-auto sm:max-w-none sm:flex-row sm:gap-3">
           <a
             href="#works"
-            className="glass flex items-center justify-center rounded-lg px-7 py-[1.875rem] text-lg font-medium text-fg transition-colors duration-300 hover:border-white/25 hover:bg-white/6"
+            className="glass flex items-center justify-center rounded-lg px-7 py-[1.875rem] text-lg font-medium text-fg transition-colors duration-300 hover:border-white/25 hover:bg-white/6 sm:py-3 sm:text-sm"
           >
             {content.hero.ctaPrimary}
           </a>
           <a
             href="#contact"
-            className="group flex items-center justify-center gap-2.5 rounded-lg bg-fg px-7 py-[1.875rem] text-lg font-medium text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(255,255,255,0.12)]"
+            className="group flex items-center justify-center gap-2.5 rounded-lg bg-fg px-7 py-[1.875rem] text-lg font-medium text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(255,255,255,0.12)] sm:py-3 sm:text-sm"
           >
             {content.hero.ctaSecondary}
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-3.5 sm:w-3.5" />
           </a>
         </motion.div>
       </motion.div>
