@@ -273,6 +273,74 @@
         "cover": "/works/cover-fromy.svg"
       }
     ],
+    "youtubeVideos": [
+      {
+        "id": "v1",
+        "title": "180 BPM Running Music | 5K Pace Maker | Funk Pop Workout | 30 MIN Playlist",
+        "videoId": "72c9Yk4_uDE",
+        "thumb": "https://i.ytimg.com/vi/72c9Yk4_uDE/hqdefault.jpg"
+      },
+      {
+        "id": "v2",
+        "title": "170 BPM Running Music | Summer Sunset Run 🌅 | 45 MIN Tempo Run | Indie Pop Running Playlist",
+        "videoId": "bHOq3I-I868",
+        "thumb": "https://i.ytimg.com/vi/bHOq3I-I868/hqdefault.jpg"
+      },
+      {
+        "id": "v3",
+        "title": "160 BPM Running Music | Summer Morning Run ☀ | 60 MIN Running Playlist | Tropical Pop Workout",
+        "videoId": "rEk3AGqTGDA",
+        "thumb": "https://i.ytimg.com/vi/rEk3AGqTGDA/hqdefault.jpg"
+      },
+      {
+        "id": "v4",
+        "title": "MARATHON 160 BPM Running Music | Endurance Run | Country Pop | 60 MIN | PaceBeat",
+        "videoId": "vFeXOzqD0fI",
+        "thumb": "https://i.ytimg.com/vi/vFeXOzqD0fI/hqdefault.jpg"
+      },
+      {
+        "id": "v5",
+        "title": "180 BPM Running Music | 45 MIN Speed Run | 5:30/km Pace | Funk Pop Playlist",
+        "videoId": "MCbZS2fMj28",
+        "thumb": "https://i.ytimg.com/vi/MCbZS2fMj28/hqdefault.jpg"
+      },
+      {
+        "id": "v6",
+        "title": "170 BPM Running Music | 45 MIN Tempo Run | 6:00 Pace | Indie Pop Running Playlist",
+        "videoId": "aY6jhvGOdhg",
+        "thumb": "https://i.ytimg.com/vi/aY6jhvGOdhg/hqdefault.jpg"
+      },
+      {
+        "id": "v7",
+        "title": "160 BPM Running Music | 6:30 Pace | 45 MIN Easy Run | Forest Morning 🌿",
+        "videoId": "bs8-25te_Co",
+        "thumb": "https://i.ytimg.com/vi/bs8-25te_Co/hqdefault.jpg"
+      },
+      {
+        "id": "v8",
+        "title": "Marathon Running Music | 67 MIN Endurance Run | The Long Journey ⚪ | Instrumental Workout Music",
+        "videoId": "v98cMkKgDvE",
+        "thumb": "https://i.ytimg.com/vi/v98cMkKgDvE/hqdefault.jpg"
+      },
+      {
+        "id": "v9",
+        "title": "180 BPM Running Music | 34 MIN Speed Run | Beyond Your Limits 🟠 | Instrumental Workout Music",
+        "videoId": "Zle_5TSrF1Y",
+        "thumb": "https://i.ytimg.com/vi/Zle_5TSrF1Y/hqdefault.jpg"
+      },
+      {
+        "id": "v10",
+        "title": "170 BPM Running Music | 45 MIN Tempo Run | Chase Your Best Pace 🔵 | Instrumental Workout Music",
+        "videoId": "mL0SsEveNvU",
+        "thumb": "https://i.ytimg.com/vi/mL0SsEveNvU/hqdefault.jpg"
+      },
+      {
+        "id": "v11",
+        "title": "160 BPM Running Music | 44 MIN Easy Run Playlist | Escape Into Nature 🌿 | Instrumental Workout Music",
+        "videoId": "vtauaECCap0",
+        "thumb": "https://i.ytimg.com/vi/vtauaECCap0/hqdefault.jpg"
+      }
+    ],
     "numbers": {
       "eyebrow": "NUMBERS",
       "title": "SO FAR.",
