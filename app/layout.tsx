@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ContentProvider } from "@/components/content-provider";
 import { EditorBar } from "@/components/editor/editor-bar";
+import { YoutubeMuteProvider } from "@/components/youtube-mute";
 
 export const metadata: Metadata = {
   title: "rojin_media — 기획부터 배포까지",
@@ -39,8 +40,10 @@ export default function RootLayout({
       </head>
       <body>
         <ContentProvider>
-          {children}
-          <EditorBar />
+          <YoutubeMuteProvider>
+            {children}
+            <EditorBar />
+          </YoutubeMuteProvider>
         </ContentProvider>
       </body>
     </html>

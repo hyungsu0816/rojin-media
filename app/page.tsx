@@ -10,6 +10,7 @@ import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 import { Rule } from "@/components/section";
 import { PixelGrain } from "@/components/pixel-grain";
+import { YoutubeMuteFloatingButton } from "@/components/youtube-mute";
 
 export default function Page() {
   return (
@@ -33,6 +34,7 @@ export default function Page() {
         <Contact />
       </main>
       <Footer />
+      <YoutubeMuteFloatingButton />
     </>
   );
 }

@@ -5,6 +5,7 @@ import { useContent } from "@/components/content-provider";
 import { T } from "@/components/editable";
 import { Section, SectionHead } from "@/components/section";
 import { NextIcon, PauseIcon, PlayIcon, PrevIcon } from "@/components/icons";
+import { useYoutubeMute } from "@/components/youtube-mute";
 
 const BARS = 72;
 
@@ -75,9 +76,13 @@ export function Music() {
   const bars = useMemo(() => waveform(track?.id ?? "seed"), [track?.id]);
   const total = toSeconds(track?.duration ?? "3:30");
 
+  // 항상 mute=1 로 시작합니다 — 실제 소리 켜짐 여부는 YoutubeMuteProvider 가
+  // postMessage 로 따로 제어합니다(주석은 youtube-mute.tsx 참고).
   const youtubeSrc = selectedVideoId
-    ? `https://www.youtube.com/embed/${selectedVideoId}?autoplay=1&rel=0`
-    : `https://www.youtube.com/embed/videoseries?list=${CHANNEL_UPLOADS_PLAYLIST[activeChannel]}&autoplay=1&rel=0`;
+    ? `https://www.youtube.com/embed/${selectedVideoId}?autoplay=1&mute=1&enablejsapi=1&rel=0`
+    : `https://www.youtube.com/embed/videoseries?list=${CHANNEL_UPLOADS_PLAYLIST[activeChannel]}&autoplay=1&mute=1&enablejsapi=1&rel=0`;
+
+  const { registerIframe } = useYoutubeMute();
 
   const selectChannelTab = (channel: "fromy" | "pacebeat") => {
     setListTab(channel);
@@ -138,7 +143,7 @@ export function Music() {
             순서대로 이어서 자동재생하고, 아래 목록에서 하나를 고르면 그 영상으로 바뀝니다.
             브라우저 정책상 소리 있는 자동재생은 처음엔 막힐 수 있는데, 그 경우
             유튜브 자체 재생 버튼이 한 번 보였다가 눌러주면 이어서 재생됩니다. */}
-        <div>
+        <div className="text-center">
           <span className="label">{activeChannel.toUpperCase()} · YOUTUBE</span>
           <div
             className="relative mt-3 w-full overflow-hidden rounded-xl border border-line bg-white/3"
@@ -146,6 +151,7 @@ export function Music() {
           >
             <iframe
               key={youtubeSrc}
+              ref={registerIframe}
               src={youtubeSrc}
               title={`${activeChannel} 유튜브 채널 영상`}
               className="absolute inset-0 h-full w-full"
@@ -255,7 +261,7 @@ export function Music() {
         {/* fromy / pacebeat 유튜브 목록 / 로컬 재생목록 — 같은 자리에서 탭으로 오갑니다.
             위 화면은 실제로 작동하는 유튜브 플레이어, 아래는 세 종류의 카탈로그입니다. */}
         <div className="border-t border-line pt-5">
-          <div className="flex w-fit items-center gap-1 rounded-full border border-line bg-white/3 p-1">
+          <div className="mx-auto flex w-fit items-center gap-1 rounded-full border border-line bg-white/3 p-1">
             <button
               type="button"
               onClick={() => selectChannelTab("fromy")}
