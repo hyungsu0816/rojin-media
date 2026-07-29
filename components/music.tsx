@@ -103,10 +103,8 @@ export function Music() {
       <SectionHead eyebrowPath="music.eyebrow" titlePath="music.title" notePath="music.note" />
 
       <div className="glass glass-top relative mx-auto grid max-w-[1000px] gap-5 rounded-2xl p-4 sm:gap-6 sm:p-6 md:grid-cols-[188px_1fr] lg:grid-cols-[188px_1fr_252px]">
-        {/* 앨범아트 (모바일에서는 화면 전체를 채우지 않도록 크기를 제한합니다).
-            이미지를 지우는 대신, 그 위에 재생/일시정지 버튼을 겹쳐서 앨범아트 자체를
-            누를 수 있는 큰 재생 버튼처럼 씁니다. */}
-        <div className="group/art relative mx-auto aspect-square w-full max-w-[190px] overflow-hidden rounded-xl border border-line bg-white/3 md:mx-0 md:max-w-none">
+        {/* 앨범아트 (모바일에서는 화면 전체를 채우지 않도록 크기를 제한합니다) */}
+        <div className="relative mx-auto aspect-square w-full max-w-[190px] overflow-hidden rounded-xl border border-line bg-white/3 md:mx-0 md:max-w-none">
           <AnimatePresence mode="wait">
             {track?.cover ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -136,28 +134,6 @@ export function Music() {
               </motion.div>
             )}
           </AnimatePresence>
-
-          <button
-            type="button"
-            onClick={() => setPlaying((p) => !p)}
-            aria-label={playing ? "일시정지" : "재생"}
-            className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 hover:bg-black/25 focus-visible:bg-black/25"
-          >
-            {/* 터치 화면은 hover 상태가 없어서, 재생 중일 때 hover 로만 보이게 하면
-                모바일에서는 다시 누를 방법이 없어집니다. 그래서 항상 옅게 보이다가
-                호버(있는 기기라면)·정지 상태에서만 더 또렷해지게 합니다. */}
-            <span
-              className={`flex h-14 w-14 items-center justify-center rounded-full bg-fg text-ink shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 group-hover/art:scale-105 group-hover/art:opacity-100 ${
-                playing ? "opacity-55" : "opacity-90"
-              }`}
-            >
-              {playing ? (
-                <PauseIcon className="h-5 w-5" />
-              ) : (
-                <PlayIcon className="ml-0.5 h-5 w-5" />
-              )}
-            </span>
-          </button>
         </div>
 
         {/* 파형 + 컨트롤 */}
