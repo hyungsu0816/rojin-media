@@ -8,11 +8,16 @@ import { NextIcon, PauseIcon, PlayIcon, PrevIcon } from "@/components/icons";
 
 const BARS = 72;
 
-// PaceBeat 채널의 "업로드 동영상" 재생목록입니다. 채널 ID(UC8iraw8fZe2S7_z5XhgA3ag,
-// youtube.com/@pacebeatmusic 페이지에서 확인)의 앞 두 글자 UC 를 UU 로 바꾸면
-// 유튜브가 자동으로 만들어주는 "이 채널의 모든 업로드" 재생목록 ID가 됩니다.
-// 이 ID 하나로 채널에 새 영상이 올라와도 따로 손댈 필요 없이 계속 이어서 재생됩니다.
-const PACEBEAT_UPLOADS_PLAYLIST = "UU8iraw8fZe2S7_z5XhgA3ag";
+// 두 채널의 "업로드 동영상" 재생목록입니다. 채널 ID(youtube.com/@핸들 페이지에서 확인)의
+// 앞 두 글자 UC 를 UU 로 바꾸면 유튜브가 자동으로 만들어주는 "이 채널의 모든 업로드"
+// 재생목록 ID가 됩니다. 이 ID 하나로 채널에 새 영상이 올라와도 따로 손댈 필요 없이
+// 계속 이어서 재생됩니다.
+const CHANNEL_UPLOADS_PLAYLIST = {
+  fromy: "UU0uYtui_gDS82eR0BEwTJHQ", // youtube.com/@from_moment
+  pacebeat: "UU8iraw8fZe2S7_z5XhgA3ag", // youtube.com/@pacebeatmusic
+} as const;
+
+type ListTab = "fromy" | "pacebeat" | "playlist";
 
 /** 트랙마다 같은 모양이 나오도록, 제목에서 파형을 만듭니다. */
 function waveform(seed: string) {
@@ -49,13 +54,18 @@ function format(sec: number) {
 export function Music() {
   const { content } = useContent();
   const tracks = content.tracks;
-  const youtubeVideos = content.youtubeVideos ?? [];
+  const pacebeatVideos = content.youtubeVideos ?? [];
+  const fromyVideos = content.fromyVideos ?? [];
 
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  // 위쪽 화면과 아래쪽 목록을 유튜브 / 로컬 재생목록 두 갈래로 나눠서 같은 카드 안에서 오갈 수 있게 합니다.
-  const [listTab, setListTab] = useState<"youtube" | "playlist">("youtube");
+  // 위쪽 화면과 아래쪽 목록을 fromy / pacebeat / 로컬 재생목록 세 갈래로 나눠서
+  // 같은 카드 안에서 탭으로 오갈 수 있게 합니다.
+  const [listTab, setListTab] = useState<ListTab>("fromy");
+  // playlist 탭으로 가도 화면은 마지막으로 보던 채널을 계속 보여줘야 하므로,
+  // "지금 보고 있는 채널"은 listTab 과 별개로 기억해둡니다.
+  const [activeChannel, setActiveChannel] = useState<"fromy" | "pacebeat">("fromy");
   // null 이면 채널 업로드를 순서대로 자동재생하고, 목록에서 하나를 고르면 그 영상만 재생합니다.
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
@@ -67,7 +77,13 @@ export function Music() {
 
   const youtubeSrc = selectedVideoId
     ? `https://www.youtube.com/embed/${selectedVideoId}?autoplay=1&rel=0`
-    : `https://www.youtube.com/embed/videoseries?list=${PACEBEAT_UPLOADS_PLAYLIST}&autoplay=1&rel=0`;
+    : `https://www.youtube.com/embed/videoseries?list=${CHANNEL_UPLOADS_PLAYLIST[activeChannel]}&autoplay=1&rel=0`;
+
+  const selectChannelTab = (channel: "fromy" | "pacebeat") => {
+    setListTab(channel);
+    setActiveChannel(channel);
+    setSelectedVideoId(null);
+  };
 
   const go = useCallback(
     (dir: number) => {
@@ -117,13 +133,13 @@ export function Music() {
       <SectionHead eyebrowPath="music.eyebrow" titlePath="music.title" notePath="music.note" />
 
       <div className="glass glass-top relative mx-auto flex max-w-[720px] flex-col gap-5 rounded-2xl p-4 sm:gap-6 sm:p-6">
-        {/* 실제로 재생되는 화면 — PaceBeat 채널의 진짜 유튜브 영상입니다.
-            아무것도 고르지 않았으면 채널 업로드를 순서대로 이어서 자동재생하고,
-            아래 YOUTUBE 목록에서 하나를 고르면 그 영상으로 바뀝니다.
+        {/* 실제로 재생되는 화면 — fromy/pacebeat 채널의 진짜 유튜브 영상입니다.
+            아무것도 고르지 않았으면 지금 선택된 채널(activeChannel)의 업로드를
+            순서대로 이어서 자동재생하고, 아래 목록에서 하나를 고르면 그 영상으로 바뀝니다.
             브라우저 정책상 소리 있는 자동재생은 처음엔 막힐 수 있는데, 그 경우
             유튜브 자체 재생 버튼이 한 번 보였다가 눌러주면 이어서 재생됩니다. */}
         <div>
-          <span className="label">PACEBEAT · YOUTUBE</span>
+          <span className="label">{activeChannel.toUpperCase()} · YOUTUBE</span>
           <div
             className="relative mt-3 w-full overflow-hidden rounded-xl border border-line bg-white/3"
             style={{ aspectRatio: "16 / 9" }}
@@ -131,7 +147,7 @@ export function Music() {
             <iframe
               key={youtubeSrc}
               src={youtubeSrc}
-              title="PaceBeat 유튜브 채널 영상"
+              title={`${activeChannel} 유튜브 채널 영상`}
               className="absolute inset-0 h-full w-full"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
@@ -236,18 +252,27 @@ export function Music() {
           </>
         ) : null}
 
-        {/* 유튜브 목록 / 로컬 재생목록 — 같은 자리에서 탭으로 오갑니다.
-            위 화면은 실제로 작동하는 유튜브 플레이어, 아래는 두 종류의 카탈로그입니다. */}
+        {/* fromy / pacebeat 유튜브 목록 / 로컬 재생목록 — 같은 자리에서 탭으로 오갑니다.
+            위 화면은 실제로 작동하는 유튜브 플레이어, 아래는 세 종류의 카탈로그입니다. */}
         <div className="border-t border-line pt-5">
           <div className="flex w-fit items-center gap-1 rounded-full border border-line bg-white/3 p-1">
             <button
               type="button"
-              onClick={() => setListTab("youtube")}
+              onClick={() => selectChannelTab("fromy")}
               className={`label rounded-full px-3 py-1.5 transition-colors ${
-                listTab === "youtube" ? "bg-fg text-ink" : "text-dim hover:text-fg"
+                listTab === "fromy" ? "bg-fg text-ink" : "text-dim hover:text-fg"
               }`}
             >
-              YOUTUBE
+              FROMY
+            </button>
+            <button
+              type="button"
+              onClick={() => selectChannelTab("pacebeat")}
+              className={`label rounded-full px-3 py-1.5 transition-colors ${
+                listTab === "pacebeat" ? "bg-fg text-ink" : "text-dim hover:text-fg"
+              }`}
+            >
+              PACEBEAT
             </button>
             <button
               type="button"
@@ -260,9 +285,9 @@ export function Music() {
             </button>
           </div>
 
-          {listTab === "youtube" ? (
+          {listTab === "fromy" || listTab === "pacebeat" ? (
             <ul className="thin-scroll mt-4 grid max-h-[300px] grid-cols-2 gap-2.5 overflow-y-auto pr-1 sm:grid-cols-3">
-              {youtubeVideos.map((v) => (
+              {(listTab === "fromy" ? fromyVideos : pacebeatVideos).map((v) => (
                 <li key={v.id}>
                   <button
                     type="button"

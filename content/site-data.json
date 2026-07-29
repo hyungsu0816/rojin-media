@@ -341,6 +341,32 @@
         "thumb": "https://i.ytimg.com/vi/vtauaECCap0/hqdefault.jpg"
       }
     ],
+    "fromyVideos": [
+      {
+        "id": "f1",
+        "title": "아이스커피 두 잔 | 햇살 가득한 여름 오후의 플레이리스트 ☕ fromy",
+        "videoId": "3F_BXRtsv0I",
+        "thumb": "https://i.ytimg.com/vi/3F_BXRtsv0I/hqdefault.jpg"
+      },
+      {
+        "id": "f2",
+        "title": "내일은 조금 다르기를 | 잠들기 전 듣는 감성 발라드 | 🌙 fromy",
+        "videoId": "WR3pCWO678s",
+        "thumb": "https://i.ytimg.com/vi/WR3pCWO678s/hqdefault.jpg"
+      },
+      {
+        "id": "f3",
+        "title": "계획만 남은 주말 여름 오후를 담은 감성 발라드 플레이리스트 | fromy",
+        "videoId": "gHEaJgBO-4M",
+        "thumb": "https://i.ytimg.com/vi/gHEaJgBO-4M/hqdefault.jpg"
+      },
+      {
+        "id": "f4",
+        "title": "오늘도 퇴근했어요. | 감성 발라드 플레이리스트 | fromy",
+        "videoId": "_YBj7AOUAm8",
+        "thumb": "https://i.ytimg.com/vi/_YBj7AOUAm8/hqdefault.jpg"
+      }
+    ],
     "numbers": {
       "eyebrow": "NUMBERS",
       "title": "SO FAR.",
