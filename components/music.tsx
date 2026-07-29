@@ -101,6 +101,8 @@ export function Music() {
     setActiveChannel(channel);
     const list = channel === "fromy" ? fromyVideos : pacebeatVideos;
     setSelectedVideoId(list[0]?.videoId ?? null);
+    // PLAYLIST 탭에서 로컬 mp3 를 재생해두고 유튜브 탭으로 넘어가면 소리가 겹치므로 멈춥니다.
+    setPlaying(false);
   };
 
   // 지금 보이는 영상이 재생 끝(state 0)이거나 재생 불가(onError) 상태가 되면
@@ -181,19 +183,41 @@ export function Music() {
       <SectionHead eyebrowPath="music.eyebrow" titlePath="music.title" notePath="music.note" />
 
       <div className="glass glass-top relative mx-auto flex max-w-[720px] flex-col gap-5 rounded-2xl p-4 sm:gap-6 sm:p-6">
-        {/* 실제로 재생되는 화면 — fromy/pacebeat 채널의 진짜 유튜브 영상입니다.
+        {/* PLAYLIST 탭에서는 유튜브 영상 대신 지금 고른 로컬 트랙의 커버 이미지를
+            같은 크기(16:9) 박스에 보여줍니다 — iframe 이 언마운트되니 유튜브 영상도
+            자연스럽게 멈춥니다. fromy/pacebeat 탭에서는 실제로 재생되는 유튜브 영상입니다.
             채널 탭을 고르면 그 채널의 목록 순서대로 재생하고, 하나를 직접 고르면
             그 영상부터 이어집니다. 영상이 끝나거나(재생 불가 포함) 목록의 다음
             영상으로 자동으로 넘어갑니다. 브라우저 정책상 소리 있는 자동재생은
             처음엔 막힐 수 있는데, 그 경우 유튜브 자체 재생 버튼이 한 번 보였다가
             눌러주면 이어서 재생됩니다. */}
         <div className="text-center">
-          <span className="label">{activeChannel.toUpperCase()} · YOUTUBE</span>
+          <span className="label">
+            {listTab === "playlist"
+              ? `${track?.project ?? ""} · TRACK`
+              : `${activeChannel.toUpperCase()} · YOUTUBE`}
+          </span>
           <div
             className="relative mt-3 w-full overflow-hidden rounded-xl border border-line bg-white/3"
             style={{ aspectRatio: "16 / 9" }}
           >
-            {youtubeSrc ? (
+            {listTab === "playlist" ? (
+              track?.cover ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={track.cover}
+                  alt={track.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                  <span className="font-mono text-4xl tracking-tight text-white/20">
+                    {track?.bpm ?? "—"}
+                  </span>
+                  <span className="label">bpm</span>
+                </div>
+              )
+            ) : youtubeSrc ? (
               <iframe
                 key={youtubeSrc}
                 ref={setIframeRef}
@@ -212,8 +236,8 @@ export function Music() {
             YOUTUBE 탭에서는 로컬 재생과 무관한 정보라 숨겨둡니다(재생 자체는 백그라운드에서 계속됩니다). */}
         {listTab === "playlist" ? (
           <>
-            <div>
-              <div className="flex items-start justify-between gap-3 sm:gap-4">
+            <div className="text-center">
+              <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
                 <T
                   path={`tracks.${index}.title`}
                   as="h3"
@@ -223,7 +247,7 @@ export function Music() {
                   {hasAudio ? "streaming" : "preview"}
                 </span>
               </div>
-              <div className="mt-1.5 flex items-center gap-2">
+              <div className="mt-1.5 flex items-center justify-center gap-2">
                 <T path={`tracks.${index}.project`} className="label" />
                 <span className="text-white/20">·</span>
                 <span className="label">{track?.bpm} BPM</span>
@@ -267,37 +291,39 @@ export function Music() {
 
             {/* 이전/다음 버튼은 아이콘이 16px 이라 그대로 두면 모바일에서 누르기 어렵습니다.
                 -m-2 p-2 로 보이는 크기는 그대로 두고 누를 수 있는 영역만 넓힙니다. */}
-            <div className="flex items-center gap-5">
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                aria-label="이전 트랙"
-                className="-m-2 p-2 text-dim transition-colors hover:text-fg"
-              >
-                <PrevIcon className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setPlaying((p) => !p)}
-                aria-label={playing ? "일시정지" : "재생"}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-fg text-ink transition-transform duration-300 hover:scale-105"
-              >
-                {playing ? (
-                  <PauseIcon className="h-4 w-4" />
-                ) : (
-                  <PlayIcon className="ml-0.5 h-4 w-4" />
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={() => go(1)}
-                aria-label="다음 트랙"
-                className="-m-2 p-2 text-dim transition-colors hover:text-fg"
-              >
-                <NextIcon className="h-4 w-4" />
-              </button>
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-5">
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  aria-label="이전 트랙"
+                  className="-m-2 p-2 text-dim transition-colors hover:text-fg"
+                >
+                  <PrevIcon className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPlaying((p) => !p)}
+                  aria-label={playing ? "일시정지" : "재생"}
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-fg text-ink transition-transform duration-300 hover:scale-105"
+                >
+                  {playing ? (
+                    <PauseIcon className="h-4 w-4" />
+                  ) : (
+                    <PlayIcon className="ml-0.5 h-4 w-4" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  aria-label="다음 트랙"
+                  className="-m-2 p-2 text-dim transition-colors hover:text-fg"
+                >
+                  <NextIcon className="h-4 w-4" />
+                </button>
+              </div>
 
-              <span className="label ml-auto tabular-nums">
+              <span className="label tabular-nums">
                 {elapsed} / {track?.duration}
               </span>
             </div>
