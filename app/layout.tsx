@@ -5,7 +5,7 @@ import { EditorBar } from "@/components/editor/editor-bar";
 import { YoutubeMuteProvider } from "@/components/youtube-mute";
 
 export const metadata: Metadata = {
-  title: "rojin_media — 기획부터 배포까지",
+  title: "rojin_media",
   description:
     "웹사이트, 브랜드 콘텐츠, 음악까지 한 사람이 만드는 서울의 AI 크리에이티브 스튜디오.",
   openGraph: {
