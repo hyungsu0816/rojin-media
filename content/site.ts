@@ -247,25 +247,27 @@ export const defaultContent = {
   // PaceBeat 유튜브 채널(youtube.com/@pacebeatmusic)에 실제로 올라온 영상 목록입니다.
   // 채널에 새 영상이 올라와도 여기 목록이 자동으로 늘어나진 않습니다.
   youtubeVideos: [
-    { id: "v1", title: "180 BPM Running Music | 5K Pace Maker | Funk Pop Workout | 30 MIN Playlist", videoId: "72c9Yk4_uDE", thumb: "https://i.ytimg.com/vi/72c9Yk4_uDE/hqdefault.jpg" },
-    { id: "v2", title: "170 BPM Running Music | Summer Sunset Run 🌅 | 45 MIN Tempo Run | Indie Pop Running Playlist", videoId: "bHOq3I-I868", thumb: "https://i.ytimg.com/vi/bHOq3I-I868/hqdefault.jpg" },
-    { id: "v3", title: "160 BPM Running Music | Summer Morning Run ☀ | 60 MIN Running Playlist | Tropical Pop Workout", videoId: "rEk3AGqTGDA", thumb: "https://i.ytimg.com/vi/rEk3AGqTGDA/hqdefault.jpg" },
-    { id: "v4", title: "MARATHON 160 BPM Running Music | Endurance Run | Country Pop | 60 MIN | PaceBeat", videoId: "vFeXOzqD0fI", thumb: "https://i.ytimg.com/vi/vFeXOzqD0fI/hqdefault.jpg" },
-    { id: "v5", title: "180 BPM Running Music | 45 MIN Speed Run | 5:30/km Pace | Funk Pop Playlist", videoId: "MCbZS2fMj28", thumb: "https://i.ytimg.com/vi/MCbZS2fMj28/hqdefault.jpg" },
-    { id: "v6", title: "170 BPM Running Music | 45 MIN Tempo Run | 6:00 Pace | Indie Pop Running Playlist", videoId: "aY6jhvGOdhg", thumb: "https://i.ytimg.com/vi/aY6jhvGOdhg/hqdefault.jpg" },
-    { id: "v7", title: "160 BPM Running Music | 6:30 Pace | 45 MIN Easy Run | Forest Morning 🌿", videoId: "bs8-25te_Co", thumb: "https://i.ytimg.com/vi/bs8-25te_Co/hqdefault.jpg" },
-    { id: "v8", title: "Marathon Running Music | 67 MIN Endurance Run | The Long Journey ⚪ | Instrumental Workout Music", videoId: "v98cMkKgDvE", thumb: "https://i.ytimg.com/vi/v98cMkKgDvE/hqdefault.jpg" },
-    { id: "v9", title: "180 BPM Running Music | 34 MIN Speed Run | Beyond Your Limits 🟠 | Instrumental Workout Music", videoId: "Zle_5TSrF1Y", thumb: "https://i.ytimg.com/vi/Zle_5TSrF1Y/hqdefault.jpg" },
-    { id: "v10", title: "170 BPM Running Music | 45 MIN Tempo Run | Chase Your Best Pace 🔵 | Instrumental Workout Music", videoId: "mL0SsEveNvU", thumb: "https://i.ytimg.com/vi/mL0SsEveNvU/hqdefault.jpg" },
-    { id: "v11", title: "160 BPM Running Music | 44 MIN Easy Run Playlist | Escape Into Nature 🌿 | Instrumental Workout Music", videoId: "vtauaECCap0", thumb: "https://i.ytimg.com/vi/vtauaECCap0/hqdefault.jpg" },
+    { id: "v1", title: "180 BPM Running Music | Evening Night Run 🌙 | Pop Rock Running Playlist | PaceBeat", videoId: "7vtdf8jbvOA", thumb: "https://i.ytimg.com/vi/7vtdf8jbvOA/hqdefault.jpg" },
+    { id: "v2", title: "180 BPM Running Music | 5K Pace Maker | Funk Pop Workout | 30 MIN Playlist", videoId: "72c9Yk4_uDE", thumb: "https://i.ytimg.com/vi/72c9Yk4_uDE/hqdefault.jpg" },
+    { id: "v3", title: "170 BPM Running Music | Summer Sunset Run 🌅 | 45 MIN Tempo Run | Indie Pop Running Playlist", videoId: "bHOq3I-I868", thumb: "https://i.ytimg.com/vi/bHOq3I-I868/hqdefault.jpg" },
+    { id: "v4", title: "160 BPM Running Music | Summer Morning Run ☀ | 60 MIN Running Playlist | Tropical Pop Workout", videoId: "rEk3AGqTGDA", thumb: "https://i.ytimg.com/vi/rEk3AGqTGDA/hqdefault.jpg" },
+    { id: "v5", title: "MARATHON 160 BPM Running Music | Endurance Run | Country Pop | 60 MIN | PaceBeat", videoId: "vFeXOzqD0fI", thumb: "https://i.ytimg.com/vi/vFeXOzqD0fI/hqdefault.jpg" },
+    { id: "v6", title: "180 BPM Running Music | 45 MIN Speed Run | 5:30/km Pace | Funk Pop Playlist", videoId: "MCbZS2fMj28", thumb: "https://i.ytimg.com/vi/MCbZS2fMj28/hqdefault.jpg" },
+    { id: "v7", title: "170 BPM Running Music | 45 MIN Tempo Run | 6:00 Pace | Indie Pop Running Playlist", videoId: "aY6jhvGOdhg", thumb: "https://i.ytimg.com/vi/aY6jhvGOdhg/hqdefault.jpg" },
+    { id: "v8", title: "160 BPM Running Music | 6:30 Pace | 45 MIN Easy Run | Forest Morning 🌿", videoId: "bs8-25te_Co", thumb: "https://i.ytimg.com/vi/bs8-25te_Co/hqdefault.jpg" },
+    { id: "v9", title: "Marathon Running Music | 67 MIN Endurance Run | The Long Journey ⚪ | Instrumental Workout Music", videoId: "v98cMkKgDvE", thumb: "https://i.ytimg.com/vi/v98cMkKgDvE/hqdefault.jpg" },
+    { id: "v10", title: "180 BPM Running Music | 34 MIN Speed Run | Beyond Your Limits 🟠 | Instrumental Workout Music", videoId: "Zle_5TSrF1Y", thumb: "https://i.ytimg.com/vi/Zle_5TSrF1Y/hqdefault.jpg" },
+    { id: "v11", title: "170 BPM Running Music | 45 MIN Tempo Run | Chase Your Best Pace 🔵 | Instrumental Workout Music", videoId: "mL0SsEveNvU", thumb: "https://i.ytimg.com/vi/mL0SsEveNvU/hqdefault.jpg" },
+    { id: "v12", title: "160 BPM Running Music | 44 MIN Easy Run Playlist | Escape Into Nature 🌿 | Instrumental Workout Music", videoId: "vtauaECCap0", thumb: "https://i.ytimg.com/vi/vtauaECCap0/hqdefault.jpg" },
   ] as YoutubeVideo[],
 
   // fromy 유튜브 채널(youtube.com/@from_moment)에 실제로 올라온 영상 목록입니다.
   fromyVideos: [
-    { id: "f1", title: "아이스커피 두 잔 | 햇살 가득한 여름 오후의 플레이리스트 ☕ fromy", videoId: "3F_BXRtsv0I", thumb: "https://i.ytimg.com/vi/3F_BXRtsv0I/hqdefault.jpg" },
-    { id: "f2", title: "내일은 조금 다르기를 | 잠들기 전 듣는 감성 발라드 | 🌙 fromy", videoId: "WR3pCWO678s", thumb: "https://i.ytimg.com/vi/WR3pCWO678s/hqdefault.jpg" },
-    { id: "f3", title: "계획만 남은 주말 여름 오후를 담은 감성 발라드 플레이리스트 | fromy", videoId: "gHEaJgBO-4M", thumb: "https://i.ytimg.com/vi/gHEaJgBO-4M/hqdefault.jpg" },
-    { id: "f4", title: "오늘도 퇴근했어요. | 감성 발라드 플레이리스트 | fromy", videoId: "_YBj7AOUAm8", thumb: "https://i.ytimg.com/vi/_YBj7AOUAm8/hqdefault.jpg" },
+    { id: "f1", title: "여름엔 일단 나가자 | 드라이브부터 한강의 밤까지 🌊", videoId: "kUOeI2Bto-M", thumb: "https://i.ytimg.com/vi/kUOeI2Bto-M/hqdefault.jpg" },
+    { id: "f2", title: "아이스커피 두 잔 | 햇살 가득한 여름 오후의 플레이리스트 ☕ fromy", videoId: "3F_BXRtsv0I", thumb: "https://i.ytimg.com/vi/3F_BXRtsv0I/hqdefault.jpg" },
+    { id: "f3", title: "내일은 조금 다르기를 | 잠들기 전 듣는 감성 발라드 | 🌙 fromy", videoId: "WR3pCWO678s", thumb: "https://i.ytimg.com/vi/WR3pCWO678s/hqdefault.jpg" },
+    { id: "f4", title: "계획만 남은 주말 여름 오후를 담은 감성 발라드 플레이리스트 | fromy", videoId: "gHEaJgBO-4M", thumb: "https://i.ytimg.com/vi/gHEaJgBO-4M/hqdefault.jpg" },
+    { id: "f5", title: "오늘도 퇴근했어요. | 감성 발라드 플레이리스트 | fromy", videoId: "_YBj7AOUAm8", thumb: "https://i.ytimg.com/vi/_YBj7AOUAm8/hqdefault.jpg" },
   ] as YoutubeVideo[],
 
   numbers: {
